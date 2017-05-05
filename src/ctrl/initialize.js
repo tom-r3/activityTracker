@@ -1,0 +1,1 @@
+var at = { model:{}, view:{}, ctrl:{} };
