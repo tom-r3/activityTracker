@@ -1,4 +1,5 @@
 at.view.addActivity = {
+  openDB(2);
   setupUserInterface: function () {
     var saveButton = document.forms['Activity'].commit;
     // load all objects

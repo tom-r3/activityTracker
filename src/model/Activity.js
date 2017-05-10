@@ -1,3 +1,5 @@
+
+
 function Activity( record) {
   this.type = record.type;
 
@@ -14,47 +16,59 @@ function Activity( record) {
 
 };
 
-Activity.instances = {}; //to keep track of all activities
+Activity.instances = []; //to keep track of all activities
 
 Activity.loadAll = function () {
-  var i=0, key="", keys=[], activityTableString="", activityTable={};  
-  try {
-    if (localStorage["activityTable"]) {
-      activityTableString = localStorage["activityTable"];
-    }
-  } catch (e) {
-    alert("Error when reading from Local Storage\n" + e);
-  }
-  if (activityTableString) {
-    activityTable = JSON.parse( activityTableString);
-    keys = Object.keys( activityTable);
-    console.log( keys.length +" activities loaded.");
-    for (i=0; i < keys.length; i++) {
-      key = keys[i];
-      Activity.instances[key] = Activity.convertRow2Obj( activityTable[key]);
-    }
-  }
+	var openRequest = window.indexedDB.open('myDB', 1);
+
+    openRequest.onerror = function (event) {
+        console.log(openRequest.errorCode);
+    };
+
+    openRequest.onsuccess = function (event) {
+        // Database is open and initialized - we're good to proceed.
+        db = openRequest.result;
+        var objectStore = db.transaction(["activities"], "readonly").objectStore("activities");
+
+		objectStore.openCursor().onsuccess = function(event) {
+		  var cursor = event.target.result;
+		  if (cursor) {
+		    Activity.instances.push(cursor.value);
+		    console.log("found");
+		    cursor.continue();
+		  }
+		  else {
+		  	//do nothing
+		  }
+		};
+    };
 };
 
-Activity.saveAll = function () {
-  Activity.loadAll(); //this is loading the previous entry after the update, stopping update from working************
+Activity.save = function (activity) {
+	var transaction = db.transaction(["activities"], "readwrite");
+	// Do something when all the data is added to the database.
+	transaction.oncomplete = function(event) {
+	  console.log("Database Updated!");
+	};
 
-  var activityTableString = "", error = false,
-      nmrOfActivities = Object.keys( Activity.instances).length;  
-  try {
-    activityTableString = JSON.stringify( Activity.instances);
-    localStorage["activityTable"] = activityTableString;
-  } catch (e) {
-    alert("Error when writing to Local Storage\n" + e);
-    error = true;
-  }
-  if (!error) console.log( nmrOfActivities + " activies saved.");
+	transaction.onerror = function(event) {
+	  // Don't forget to handle errors!
+	  console.log("error: " + event);
+	};
+
+	var objectStore = transaction.objectStore("activities");
+	  var request = objectStore.add(activity);
+	  request.onsuccess = function(event) {
+	  	console.log("Activity Added.");
+	  };
 };
+
 
 Activity.add = function (record) {
   var activity = new Activity( record);
-  Activity.instances[activity.time] = activity;
   console.log("Activity " + activity.type + " started at " + activity.time);
+
+  Activity.save(activity);
 };
 
 Activity.update = function (record) {
@@ -75,12 +89,26 @@ Activity.delete = function (time) {
   }
 }; 
 
+Activity.deleteAll = function () {
+	var openRequest = window.indexedDB.open('myDB', 1);
+
+    openRequest.onerror = function (event) {
+        console.log(openRequest.errorCode);
+    };
+
+    openRequest.onsuccess = function (event) {
+        // Database is open and initialized - we're good to proceed.
+        db = openRequest.result;
+        var objectStore = db.transaction(["activities"], "readwrite").objectStore("activities");
+
+		objectStore.clear();
+		};
+    };
+
 Activity.createTestData = function () { //this is loading activities at the same time which causes some not to save
   Activity.add({type:"travel", time:Date.now()});
   Activity.add({type:"cook", time:Date.now()+1});
   Activity.add({type:"sleep", time:Date.now()+2});
-
-  Activity.saveAll();
 };
 
 Activity.clearData = function () {
@@ -93,3 +121,43 @@ Activity.convertRow2Obj = function (activityRow) {
   var activity = new Activity( activityRow); //this is creating a new time stamp on every load!
   return activity;
 };
+
+function openDB(){
+    var openRequest = window.indexedDB.open('myDB', 1);
+
+    openRequest.onerror = function (event) {
+        console.log(openRequest.errorCode);
+    };
+
+    openRequest.onsuccess = function (event) {
+        // Database is open and initialized - we're good to proceed.
+        db = openRequest.result;
+    };
+
+    openRequest.onupgradeneeded = function (event) {
+        // This is either a newly created database, or a new version number
+        // has been submitted to the open() call.
+        db = event.target.result;
+        db.onerror = function () {
+            console.log(db.errorCode);
+        };
+
+        // Create an object store and indexes. A key is a data value used to organize
+        // and retrieve values in the object store. The keyPath option identifies where
+        // the key is stored. If a key path is specified, the store can only contain
+        // JavaScript objects, and each object stored must have a property with the
+        // same name as the key path (unless the autoIncrement option is true).
+        var store = db.createObjectStore('activities', { keyPath: 'time' });
+
+        // Define an index to search activities by type
+        // syntax: store.createIndex(indexName, keyPath[, parameters]);
+        store.createIndex('type', 'type', { unique: false });
+
+        // Once the store is created, populate it
+        store.transaction.oncomplete = function (event) {
+            console.log("Store created successfully.")
+        };
+    };
+};
+
+openDB();
