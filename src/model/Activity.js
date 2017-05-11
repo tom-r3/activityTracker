@@ -48,7 +48,6 @@ Activity.save = function (activity) {
 	var transaction = db.transaction(["activities"], "readwrite");
 	// Do something when all the data is added to the database.
 	transaction.oncomplete = function(event) {
-	  console.log("Database Updated!");
 	};
 
 	transaction.onerror = function(event) {
@@ -59,7 +58,6 @@ Activity.save = function (activity) {
 	var objectStore = transaction.objectStore("activities");
 	  var request = objectStore.add(activity);
 	  request.onsuccess = function(event) {
-	  	console.log("Activity Added.");
 	  };
 };
 
@@ -113,7 +111,7 @@ Activity.createTestData = function () { //this is loading activities at the same
 
 Activity.clearData = function () {
   if (confirm("Do you really want to delete all book data?")) {
-    localStorage["activityTable"] = "{}";
+    Activity.deleteAll();
   }
 };
 

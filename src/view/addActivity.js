@@ -1,9 +1,7 @@
 at.view.addActivity = {
-  openDB(2);
   setupUserInterface: function () {
     var saveButton = document.forms['Activity'].commit;
-    // load all objects
-    Activity.loadAll();
+
     // Set an event handler for the save/submit button
     saveButton.addEventListener("click", 
         at.view.addActivity.handleSaveButtonClickEvent);
