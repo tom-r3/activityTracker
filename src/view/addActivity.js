@@ -5,15 +5,11 @@ at.view.addActivity = {
     // Set an event handler for the save/submit button
     saveButton.addEventListener("click", 
         at.view.addActivity.handleSaveButtonClickEvent);
-    window.addEventListener("beforeunload", function () {
-        Activity.saveAll(); 
-    });
   },
+  
   handleSaveButtonClickEvent: function () {
     var formEl = document.forms['Activity'];
-    var record = { type: formEl.type.value, 
-                   time: Date.now()};
-    Activity.add( record);
+    Activity.add(formEl.type.value);
     formEl.reset();
   }
 };

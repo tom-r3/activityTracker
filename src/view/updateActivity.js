@@ -65,12 +65,7 @@ at.view.updateActivity = {
   handleUpdateButtonClickEvent: function () {
     var selectedActivity = null;
     var formEl = document.forms['Activity'];
-    var record = { time: Number(formEl.time.value), 
-        type: formEl.type.value, 
-    };
-
-    Activity.update(record);
-
+    Activity.update(formEl.type.value, Number(formEl.time.value));
     formEl.reset();
 
   }

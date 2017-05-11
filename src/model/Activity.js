@@ -1,23 +1,22 @@
 
 
-function Activity( record) {
-  this.type = record.type;
+function Activity( type) {
+  this.type = type;
 
-/*
   var currentTime = new Date();
   this.year = currentTime.getFullYear();
   this.month = currentTime.getMonth();
   this.day = currentTime.getDay();
   this.hour = currentTime.getHours();
   this.minute = currentTime.getMinutes();
- */
 
-  this.time = record.time;
+  this.time = Number(Date.now());
 
 };
 
-Activity.add = function (record) {
-  var activity = new Activity( record);
+Activity.add = function (type) {
+
+  var activity = new Activity(type);
   console.log("Activity " + activity.type + " started at " + activity.time);
 
   var transaction = db.transaction(["activities"], "readwrite");
@@ -37,7 +36,7 @@ Activity.add = function (record) {
   
 };
 
-Activity.update = function (record) {
+Activity.update = function (type, time) {
     var openRequest = window.indexedDB.open('myDB', 1);
 
     openRequest.onerror = function (event) {
@@ -49,7 +48,7 @@ Activity.update = function (record) {
         db = openRequest.result;
 
         var objectStore = db.transaction(["activities"], "readwrite").objectStore("activities");
-        var request = objectStore.get(record.time);
+        var request = objectStore.get(time);
         request.onerror = function(event) {
           // Handle errors!
         };
@@ -58,7 +57,7 @@ Activity.update = function (record) {
           var data = event.target.result;
           
           // update the value(s) in the object that you want to change
-          data.type = record.type;
+          data.type = type;
 
           // Put this updated object back into the database.
           var requestUpdate = objectStore.put(data);
@@ -72,7 +71,7 @@ Activity.update = function (record) {
     };
 };
 
-Activity.delete = function (record) {
+Activity.delete = function (time) {
     var openRequest = window.indexedDB.open('myDB', 1);
 
     openRequest.onerror = function (event) {
@@ -84,7 +83,7 @@ Activity.delete = function (record) {
         db = openRequest.result;
         var request = db.transaction(["activities"], "readwrite")
                         .objectStore("activities")
-                        .delete(record.time);
+                        .delete(time);
         request.onsuccess = function(event) {
           console.log("activity deleted");
         };
@@ -107,10 +106,28 @@ Activity.deleteAll = function () {
 		};
 };
 
-Activity.createTestData = function () { //this is loading activities at the same time which causes some not to save
-  Activity.add({type:"travel", time:Date.now()});
-  Activity.add({type:"cook", time:Date.now()+1});
-  Activity.add({type:"sleep", time:Date.now()+2});
+Activity.createTestData = function () {
+  var activity = new Activity("activity");
+
+  for(var i=0; i<5; i++) {
+      activity.type = "activity " + i;
+      activity.time++;
+
+      var transaction = db.transaction(["activities"], "readwrite");
+      // Do something when all the data is added to the database.
+      transaction.oncomplete = function(event) {
+      };
+
+      transaction.onerror = function(event) {
+        // Don't forget to handle errors!
+        console.log("error: " + event);
+      };
+
+      var objectStore = transaction.objectStore("activities");
+        var request = objectStore.add(activity);
+        request.onsuccess = function(event) {
+        };
+  }
 };
 
 Activity.clearData = function () {

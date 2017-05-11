@@ -64,12 +64,7 @@ at.view.deleteActivity = {
   handleDeleteButtonClickEvent: function () {
     var selectedActivity = null;
     var formEl = document.forms['Activity'];
-    var record = { time: Number(formEl.time.value), 
-        type: formEl.type.value, 
-    };
-
-    Activity.delete(record);
-
+    Activity.delete(Number(formEl.time.value));
     formEl.reset();
 
   }
