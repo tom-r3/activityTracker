@@ -16,57 +16,25 @@ function Activity( record) {
 
 };
 
-Activity.instances = []; //to keep track of all activities
-
-Activity.loadAll = function () {
-	var openRequest = window.indexedDB.open('myDB', 1);
-
-    openRequest.onerror = function (event) {
-        console.log(openRequest.errorCode);
-    };
-
-    openRequest.onsuccess = function (event) {
-        // Database is open and initialized - we're good to proceed.
-        db = openRequest.result;
-        var objectStore = db.transaction(["activities"], "readonly").objectStore("activities");
-
-		objectStore.openCursor().onsuccess = function(event) {
-		  var cursor = event.target.result;
-		  if (cursor) {
-		    Activity.instances.push(cursor.value);
-		    console.log("found");
-		    cursor.continue();
-		  }
-		  else {
-		  	//do nothing
-		  }
-		};
-    };
-};
-
-Activity.save = function (activity) {
-	var transaction = db.transaction(["activities"], "readwrite");
-	// Do something when all the data is added to the database.
-	transaction.oncomplete = function(event) {
-	};
-
-	transaction.onerror = function(event) {
-	  // Don't forget to handle errors!
-	  console.log("error: " + event);
-	};
-
-	var objectStore = transaction.objectStore("activities");
-	  var request = objectStore.add(activity);
-	  request.onsuccess = function(event) {
-	  };
-};
-
-
 Activity.add = function (record) {
   var activity = new Activity( record);
   console.log("Activity " + activity.type + " started at " + activity.time);
 
-  Activity.save(activity);
+  var transaction = db.transaction(["activities"], "readwrite");
+  // Do something when all the data is added to the database.
+  transaction.oncomplete = function(event) {
+  };
+
+  transaction.onerror = function(event) {
+    // Don't forget to handle errors!
+    console.log("error: " + event);
+  };
+
+  var objectStore = transaction.objectStore("activities");
+    var request = objectStore.add(activity);
+    request.onsuccess = function(event) {
+    };
+  
 };
 
 Activity.update = function (record) {
@@ -104,14 +72,24 @@ Activity.update = function (record) {
     };
 };
 
-Activity.delete = function (time) {
-  var request = db.transaction(["activities"], "readwrite")
-                  .objectStore("activities")
-                  .delete(Number(time));
-  request.onsuccess = function(event) {
-  console.log("activity deleted");
-  };
-}; 
+Activity.delete = function (record) {
+    var openRequest = window.indexedDB.open('myDB', 1);
+
+    openRequest.onerror = function (event) {
+        console.log(openRequest.errorCode);
+    };
+
+    openRequest.onsuccess = function (event) {
+        // Database is open and initialized - we're good to proceed.
+        db = openRequest.result;
+        var request = db.transaction(["activities"], "readwrite")
+                        .objectStore("activities")
+                        .delete(record.time);
+        request.onsuccess = function(event) {
+          console.log("activity deleted");
+        };
+    };
+  }; 
 
 Activity.deleteAll = function () {
 	var openRequest = window.indexedDB.open('myDB', 1);
@@ -139,11 +117,6 @@ Activity.clearData = function () {
   if (confirm("Do you really want to delete all book data?")) {
     Activity.deleteAll();
   }
-};
-
-Activity.convertRow2Obj = function (activityRow) {
-  var activity = new Activity( activityRow); //this is creating a new time stamp on every load!
-  return activity;
 };
 
 function openDB(){
