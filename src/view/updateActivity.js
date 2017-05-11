@@ -65,34 +65,11 @@ at.view.updateActivity = {
   handleUpdateButtonClickEvent: function () {
     var selectedActivity = null;
     var formEl = document.forms['Activity'];
-    var record = { time: formEl.time.value, 
+    var record = { time: Number(formEl.time.value), 
         type: formEl.type.value, 
     };
 
-    var objectStore = db.transaction(["activities"], "readwrite").objectStore("activities");
-    selectedActivity = Number(formEl.time.value);
-    var request = objectStore.get(selectedActivity);
-    request.onerror = function(event) {
-      // Handle errors!
-    };
-    request.onsuccess = function(event) {
-      // Get the old value that we want to update
-      var data = event.target.result;
-      
-      // update the value(s) in the object that you want to change
-      data.type = record.type;
-
-      console.log(data);
-
-      // Put this updated object back into the database.
-      var requestUpdate = objectStore.put(data);
-       requestUpdate.onerror = function(event) {
-         // Do something with the error
-       };
-       requestUpdate.onsuccess = function(event) {
-         console.log("updated");
-       };
-    };
+    Activity.update(record);
 
     formEl.reset();
 

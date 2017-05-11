@@ -70,21 +70,47 @@ Activity.add = function (record) {
 };
 
 Activity.update = function (record) {
-  var activity = Activity.instances[record.time];
-  var type = record.type;
-  if (activity.type !== record.type) { activity.type = record.type;}
-  console.log("Activity " + record.time + " modified!");
+    var openRequest = window.indexedDB.open('myDB', 1);
 
-  Activity.saveAll();
+    openRequest.onerror = function (event) {
+        console.log(openRequest.errorCode);
+    };
+
+    openRequest.onsuccess = function (event) {
+        // Database is open and initialized - we're good to proceed.
+        db = openRequest.result;
+
+        var objectStore = db.transaction(["activities"], "readwrite").objectStore("activities");
+        var request = objectStore.get(record.time);
+        request.onerror = function(event) {
+          // Handle errors!
+        };
+        request.onsuccess = function(event) {
+          // Get the old value that we want to update
+          var data = event.target.result;
+          
+          // update the value(s) in the object that you want to change
+          data.type = record.type;
+
+          // Put this updated object back into the database.
+          var requestUpdate = objectStore.put(data);
+           requestUpdate.onerror = function(event) {
+             // Do something with the error
+           };
+           requestUpdate.onsuccess = function(event) {
+             console.log("activity updated");
+           };
+        };
+    };
 };
 
 Activity.delete = function (time) {
-  if (Activity.instances[time]) {
-    console.log("Activity " + time + " deleted");
-    delete Activity.instances[time];
-  } else {
-    console.log("There is no activity with time " + time + " in the database!");
-  }
+  var request = db.transaction(["activities"], "readwrite")
+                  .objectStore("activities")
+                  .delete(Number(time));
+  request.onsuccess = function(event) {
+  console.log("activity deleted");
+  };
 }; 
 
 Activity.deleteAll = function () {
@@ -101,7 +127,7 @@ Activity.deleteAll = function () {
 
 		objectStore.clear();
 		};
-    };
+};
 
 Activity.createTestData = function () { //this is loading activities at the same time which causes some not to save
   Activity.add({type:"travel", time:Date.now()});
