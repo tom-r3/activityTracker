@@ -26,7 +26,7 @@
         var cursor = event.target.result;
         if (cursor) {
           addRow(cursor.value.time, cursor.value.type);
-          console.log("found");
+          console.log(cursor.value);
           cursor.continue();
         }
         else {

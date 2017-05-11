@@ -1,6 +1,5 @@
 
-
-function Activity( type) {
+function Activity(type) {
   this.type = type;
 
   var currentTime = new Date();
@@ -10,8 +9,46 @@ function Activity( type) {
   this.hour = currentTime.getHours();
   this.minute = currentTime.getMinutes();
 
-  this.time = Number(Date.now());
+  var time = Number(Date.now());
+  this.time = time;
 
+  this.duration = 0;
+
+  var openRequest = window.indexedDB.open('myDB', 1);
+
+  openRequest.onerror = function (event) {
+      console.log(openRequest.errorCode);
+  };
+
+  openRequest.onsuccess = function (event) {
+      // Database is open and initialized - we're good to proceed.
+      db = openRequest.result;
+
+      var objectStore = db.transaction(["activities"], "readwrite").objectStore("activities");
+      
+      objectStore.openCursor(null, 'prev').onsuccess = function(event) {
+        var cursor = event.target.result;
+        if(cursor) {
+          if (Number(cursor.value.time) == time) { //this is the current value, skip it
+            cursor.continue();
+          }
+          else{ //this is the previous value, update duration
+            var activeLength = time - cursor.value.time;
+            cursor.value.duration = activeLength;
+
+            var requestUpdate = objectStore.put(cursor.value);
+             requestUpdate.onerror = function(event) {
+               // Do something with the error
+             };
+             requestUpdate.onsuccess = function(event) {
+             };
+          }
+        }
+        else{
+          //do nothing, the db is empty 
+        }
+      };
+    };
 };
 
 Activity.add = function (type) {
