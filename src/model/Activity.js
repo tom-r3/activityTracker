@@ -5,7 +5,7 @@ function Activity(type) {
   var currentTime = new Date();
   this.year = currentTime.getFullYear();
   this.month = currentTime.getMonth();
-  this.day = currentTime.getDay();
+  this.day = currentTime.getDate();
   this.hour = currentTime.getHours();
   this.minute = currentTime.getMinutes();
 

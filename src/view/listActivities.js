@@ -10,11 +10,13 @@
       var cell3 = row.insertCell(2);
       var cell4 = row.insertCell(3);
       var cell5 = row.insertCell(4);
+      var cell6 = row.insertCell(5);
       cell1.innerHTML = activity.type;
-      cell2.innerHTML = activity.day;
-      cell3.innerHTML = activity.hour;
-      cell4.innerHTML = activity.minute;
-      cell5.innerHTML = activity.duration;
+      cell2.innerHTML = activity.month;
+      cell3.innerHTML = activity.day;
+      cell4.innerHTML = activity.hour;
+      cell5.innerHTML = activity.minute;
+      cell6.innerHTML = activity.duration;
     }
 
   var openRequest = window.indexedDB.open('myDB', 1);
