@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <title>Activity Tracker</title>
+  <link rel="stylesheet" href="src/view/style.css">
   <script src="src/ctrl/initialize.js"></script>
   <script src="src/model/Activity.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="src/view/listActivities.js"></script>
+  
+  
   <script>
    window.addEventListener( "load", at.view.listActivities.setupUserInterface);
   </script>
@@ -17,5 +21,6 @@
     <tbody></tbody>
   </table>
   <nav><a href="index.html">Back to main menu</a></nav>
+  <div id="piechart" style="width: 900px; height: 500px;"></div>
 </body>
 </html>

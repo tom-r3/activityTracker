@@ -1,3 +1,5 @@
+ google.charts.load("current", {packages:["corechart"]});
+ 
  at.view.listActivities = {
   setupUserInterface: function () {
     var tableBodyEl = document.querySelector("table#activities>tbody");
@@ -27,17 +29,87 @@
         // Database is open and initialized - we're good to proceed.
         db = openRequest.result;
         var objectStore = db.transaction(["activities"], "readonly").objectStore("activities");
-
+        var data = new Array();
+        var i = 0;
       objectStore.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
+
         if (cursor) {
           addRow(cursor.value);
-          console.log(cursor.value);
+          var obj ={};
+          var activity = cursor.value.type;
+          var duration = cursor.value.duration;
+          obj = {activity, duration};
+          
+          
+          data[i] = obj;
+          i++;
+          
           cursor.continue();
+          
         }
+
         else {
-          //do nothing
+          showInfo(data);
         }
+
+        
+        
+      };
+      
+
+
+
+
+      function showInfo(data){
+        
+        var doubles = data.map(function(data){
+
+          var src = {};
+          src = [data.activity, Number(data.duration)]
+          return src;
+        });
+        
+        drawChart(doubles);
+        
+        
+        
+      }; 
+     
+
+
+      
+
+      google.charts.setOnLoadCallback(drawChart);
+
+
+
+      function drawChart(dataStuff) {
+
+        
+       // Create the data table.
+       console.log(dataStuff);
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('string', 'Activity');
+        data.addColumn('number', 'Duration');
+        data.addRows(dataStuff);
+        
+
+
+        var options = {
+          title: 'How you spent your time this week:',
+          legend: 'none',
+          pieSliceText: 'label',
+          slices: {  4: {offset: 0.2},
+                    12: {offset: 0.3},
+                    14: {offset: 0.4},
+                    15: {offset: 0.5},
+          },
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
       };
     };
   }
