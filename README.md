@@ -1,1 +1,1 @@
-activityTracker
+An activity tracker designed to be as unintrusive and effective as possible. 

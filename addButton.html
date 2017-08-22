@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Activity Tracker</title>    
+  <script src="src/ctrl/initialize.js"></script>
+  <script src="src/model/Activity.js"></script>
+  <script src="src/model/buttons.js"></script>
+  <script src="src/view/addButton.js"></script>
+  <script>
+   window.addEventListener("load", at.view.addButton.setupUserInterface);
+  </script>
+</head>
+
+<body>
+  <h1>Activity Tracker: Add a new button.</h1>
+  <form id="Activity">
+    <p><label>Activity Type: <input name="type" /></label></p>
+    <p><button type="button" name="commit">Save</button></p>
+  </form>
+  <nav><a href="index.html">Back to main menu</a></nav>
+</body>
+</html>
+
+

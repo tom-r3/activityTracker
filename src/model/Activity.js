@@ -53,6 +53,9 @@ function Activity(type) {
 
 Activity.add = function (type) {
 
+  // Get a reference to the database service
+  var database = firebase.database();
+
   var activity = new Activity(type);
   console.log("Activity " + activity.type + " started at " + activity.time);
 
@@ -70,6 +73,16 @@ Activity.add = function (type) {
     var request = objectStore.add(activity);
     request.onsuccess = function(event) {
     };
+
+  firebase.database().ref('activities/' + activity.time).set({
+    type: 'running',
+    year: activity.year,
+    month: activity.month,
+    day: activity.day,
+    hour: activity.hour,
+    minute: activity.minute,
+    duration: activity.duration
+  })
   
 };
 

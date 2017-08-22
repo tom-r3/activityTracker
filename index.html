@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCeldE5WnxVpHNA4Tn7N8aEItE9uEixuqc",
+      authDomain: "activity-tracker-60ff5.firebaseapp.com",
+      databaseURL: "https://activity-tracker-60ff5.firebaseio.com",
+      projectId: "activity-tracker-60ff5",
+      storageBucket: "activity-tracker-60ff5.appspot.com",
+      messagingSenderId: "22021887838"
+    };
+    firebase.initializeApp(config);
+  </script>
+
 <head>
   <meta charset="UTF-8" />
   <title>Activity Tracker</title>
   <link rel="stylesheet" href="src/view/style.css">
+
   <script src="src/model/Activity.js"></script>
   <script src="src/model/buttons.js"></script>
 </head>
+
 <body class="index">
   <h1 id="header">Activity Tracker</h1>
   <h2 id="subhead">An Efficient Way to Increase Productivity</h2>
