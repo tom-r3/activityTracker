@@ -53,37 +53,46 @@ function Activity(type) {
 
 Activity.add = function (type) {
 
-  // Get a reference to the database service
-  var database = firebase.database();
-
+  // create new activity
   var activity = new Activity(type);
   console.log("Activity " + activity.type + " started at " + activity.time);
 
-  var transaction = db.transaction(["activities"], "readwrite");
-  // Do something when all the data is added to the database.
-  transaction.oncomplete = function(event) {
-  };
+  // create database instance
+  var database = firebase.database();
+  var activityListRef = database.ref('activities/');  
 
-  transaction.onerror = function(event) {
-    // Don't forget to handle errors!
-    console.log("error: " + event);
-  };
+  // add new activity to database
+  var newActivityRef = activityListRef.push();
+    newActivityRef.set({
+      type: type,
+      year: activity.year,
+      month: activity.month,
+      day: activity.day,
+      hour: activity.hour,
+      minute: activity.minute,
+      duration: activity.duration,
+      time: activity.time
+  });
 
-  var objectStore = transaction.objectStore("activities");
-    var request = objectStore.add(activity);
-    request.onsuccess = function(event) {
-    };
+  // order list by one most recent
+  var recentActivityRef = activityListRef.limitToLast(2);
 
-  firebase.database().ref('activities/' + activity.time).set({
-    type: 'running',
-    year: activity.year,
-    month: activity.month,
-    day: activity.day,
-    hour: activity.hour,
-    minute: activity.minute,
-    duration: activity.duration
-  })
-  
+  // attach value observer to get two most recent entries
+  var mostRecents = [];
+  recentActivityRef.once('value', function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      mostRecents.push(childSnapshot.val());
+      mostRecents.push(childSnapshot.key);
+    });
+
+    // calculate the duration
+    var duration = mostRecents[2].time - mostRecents[0].time;
+    console.log(duration)
+    
+    // update the most recent entry with its duration
+    database.ref('activities/' + mostRecents[1]).update({ duration: duration });
+  });
+
 };
 
 Activity.update = function (type, time) {
