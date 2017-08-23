@@ -21,84 +21,53 @@
       cell6.innerHTML = activity.duration;
     }
 
-  var openRequest = window.indexedDB.open('myDB', 1);
+    // set up array for chart
+    var data = new Array();
+    var i=0;
 
-    openRequest.onerror = function (event) {
-        console.log(openRequest.errorCode);
-    };
+    // open a connection to the database and read all activities
+    firebase.database().ref('activities').once('value').then(function(snapshot) {
+      snapshot.forEach(function(activitySnapshot) {
+          var activity = activitySnapshot.val();
+          // set up table
+          addRow(activity);
 
-    openRequest.onsuccess = function (event) {
-        // Database is open and initialized - we're good to proceed.
-        db = openRequest.result;
-        var objectStore = db.transaction(["activities"], "readonly").objectStore("activities");
-        var data = new Array();
-        var i = 0;
-      objectStore.openCursor().onsuccess = function(event) {
-        var cursor = event.target.result;
-
-        if (cursor) {
-          addRow(cursor.value);
-          var obj ={};
-          var activity = cursor.value.type;
-          var duration = cursor.value.duration;
-          obj = {activity, duration};
-          
-          
+          // set up chart
+          var type = activity.type;
+          var duration = activity.duration;
+          var obj = {type, duration};
           data[i] = obj;
-          i++;
-          
-          cursor.continue();
-          
-        }
 
-        else {
-          showInfo(data);
-        }
+          // increment i
+          i = i+1;
+      });
 
-        
-        
-      };
-      
+      // show chart
+      showInfo(data);
 
-
-
-
-      function showInfo(data){
-        
+      function showInfo(data){    
         var doubles = data.map(function(data){
-
           var src = {};
           src = [data.activity, Number(data.duration)]
           return src;
         });
         
         drawChart(doubles);
-        
-        
-        
+          
       }; 
-     
-
-
-      
-
+       
       google.charts.setOnLoadCallback(drawChart);
-
-
 
       function drawChart(dataStuff) {
 
-        
-       // Create the data table.
-       console.log(dataStuff);
+        // Create the data table
         var data = new google.visualization.DataTable();
 
         data.addColumn('string', 'Activity');
         data.addColumn('number', 'Duration');
-        data.addRows(dataStuff);
+        console.log(dataStuff); 
+        data.addRows(dataStuff); //why is this throwing an error?
         
-
-
         var options = {
           title: 'How you spent your time this week:',
           legend: 'none',
@@ -113,6 +82,8 @@
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
         chart.draw(data, options);
       };
-    };
+
+    });
+
   }
 };

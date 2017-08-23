@@ -1,4 +1,0 @@
--build with HTML, CSS and JS
--use Firebase for the backend (realtime database, authentication)
--make frontend look good
--use cordova to port app to android and ios
