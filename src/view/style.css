@@ -1,26 +1,36 @@
-.index{
+.index {
 	background: #F0F8FF;
 	text-align: center;
 }
 
-
-#header{
+#header {
 	font-family: Baskerville, "Bskerville Old Face", "Goudy Old Style";
 	
 	font-size: 100px;
 
 };
 
-#subhead{
+#subhead {
 	font-family:  Baskerville, "Bskerville Old Face", "Goudy Old Style";
 	color: white;
 
 }
 
-.buttons{
+.buttons {
 	border-radius: 4px;
 	font-size: 24px;
 	font-family: Baskerville, "Bskerville Old Face", "Goudy Old Style";
 	color:white;
+}
 
+.activity-buttons {
+	display: none;
+}
+
+.buttonmenu {
+	list-style-type: none;
+}
+
+.buttonmenu button {
+	display: block;
 }

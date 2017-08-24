@@ -17,22 +17,21 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Activity Tracker</title>
-  <link rel="stylesheet" href="src/view/style.css">
-
+  <title>Activity Tracker</title>    
+  <script src="src/ctrl/initialize.js"></script>
   <script src="src/model/Activity.js"></script>
+  <script src="src/view/settings.js"></script>
   <script src="src/model/buttons.js"></script>
+  <script>
+   window.addEventListener("load", at.view.settings.setupUserInterface);
+  </script>
 </head>
-
-<body class="index">
-  <h1 id="header">Activity Tracker</h1>
-  <h2 id="subhead">An Efficient Way to Increase Productivity</h2>
-  <p>This app supports the following operations:</p>
-  <menu>
-    <li><a href="main.html"><button class ="buttons" id="view" type="button">Main Page</button></a></li>
-    <li><a href="settings.html"><button class ="buttons" id="add" type="button">Settings</button></a></li>
-    <li><a href="listActivities.html"><button class ="buttons" id="view" type="button">View Activities</button></a></li>
-  </menu>
-
+<body>
+  <h1>Activity Tracker: Settings.</h1>
+  <form id="Activity">
+    <p><label>New Activity Type: <input name="type" /></label></p>
+    <p><button type="button" name="commit">Save</button></p>
+  </form>
+  <nav><a href="index.html">Back to main menu</a></nav>
 </body>
-</html> 
+</html>
