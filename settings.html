@@ -27,11 +27,22 @@
   </script>
 </head>
 <body>
-  <h1>Activity Tracker: Settings.</h1>
-  <form id="Activity">
-    <p><label>New Activity Type: <input name="type" /></label></p>
-    <p><button type="button" name="commit">Save</button></p>
+  <h1>Activity Tracker: Settings</h1>
+
+  <form id="addType">
+    <p><label>Add Type: <input name="type" /></label></p>
+    <p><button type="button" name="commit">Add</button></p>
   </form>
+
+  <form id="deleteType">
+    <p>
+      <label>Delete Type: 
+        <select name="selectActivity"><option value=""> --- </option></select>
+      </label>
+    </p>
+    <p><button type="button" name="commit">Delete</button></p>
+  </form>
+
   <nav><a href="index.html">Back to main menu</a></nav>
 </body>
 </html>
