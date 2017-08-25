@@ -1,4 +1,4 @@
-at.view.index = {
+at.view.register = {
   setupUserInterface: function () {
   	// firebase event listener
     firebase.auth().onAuthStateChanged(function(user) {
@@ -13,21 +13,22 @@ at.view.index = {
     });
 
     // get variables for buttons
-    var logButton = document.forms['indexform'].commit;
+    var regButton = document.forms['registerform'].commit;
 
     // Set an event handler for the save/submit button
-    logButton.addEventListener("click", 
-        at.view.index.handleLogButtonClickEvent);
+    regButton.addEventListener("click", 
+        at.view.register.handleRegButtonClickEvent);
   },
   
-  handleLogButtonClickEvent: function () {
+  handleRegButtonClickEvent: function () {
   	// obtain form info
-  	var formEl = document.forms['indexform'];
-  	var email = formEl.email.value;
+  	var formEl = document.forms['registerform'];
+  	var name = formEl.name.value;
+    var email = formEl.email.value;
     var password = formEl.password.value;
 
     // log user in
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+  	firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
 	  // Handle Errors here.
 	  var errorCode = error.code;
 	  var errorMessage = error.message;

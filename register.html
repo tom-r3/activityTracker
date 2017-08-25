@@ -20,26 +20,27 @@
   <title>Activity Tracker</title>    
   <script src="src/ctrl/initialize.js"></script>
   <script src="src/model/Activity.js"></script>
-  <script src="src/view/index.js"></script>
+  <script src="src/view/register.js"></script>
   <script src="src/model/buttons.js"></script>
   <script>
-   window.addEventListener("load", at.view.index.setupUserInterface);
+   window.addEventListener("load", at.view.register.setupUserInterface);
   </script>
 </head>
 
 <body>
-  <h1>Activity Tracker: Login</h1>
+  <h1>Activity Tracker: Register</h1>
 
-  <h2> Login </h2>
-  <form id="indexform">
+  <h2> Register </h2>
+  <form id="registerform">
+    <p><label>Full Name: <input name="name" /></label></p>
     <p><label>Email: <input name="email" /></label></p>
     <p><label>Password: <input name="password" /></label></p>
     <div class="indexbuttons">
-      <button type="button" name="commit">Login</button>
+      <button type="button" name="commit">Register</button>
     </div>
   </form>
 
-  <nav><a href="register.html">Register</a></nav>
+  <nav><a href="index.html">Login</a></nav>
   <nav><a href="main.html">Back to main menu</a></nav>
 </body>
 </html>

@@ -3,6 +3,7 @@ at.view.main = {
     // firebase event listener
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
+        console.log(user);
         
         // open a connection to the database and read all activities
         var userId = firebase.auth().currentUser.uid;
