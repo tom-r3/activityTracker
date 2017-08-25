@@ -16,6 +16,10 @@
 
 }
 
+.indexbuttons button {
+	display: inline;
+}
+
 .buttons {
 	border-radius: 4px;
 	font-size: 24px;

@@ -20,11 +20,11 @@ Activity.add = function (type) {
 
   // create new activity
   var activity = new Activity(type);
-  console.log("Activity " + activity.type + " started at " + activity.time);
 
   // create database instance
   var database = firebase.database();
-  var activityListRef = database.ref('activities/');  
+  var userId = firebase.auth().currentUser.uid;
+  var activityListRef = database.ref('users/' + userId + '/activities/');  
 
   // add new activity to database
   var newActivityRef = activityListRef.push();
@@ -54,17 +54,16 @@ Activity.add = function (type) {
     if (typeof mostRecents[2] != 'undefined') {
       // calculate the duration
       var duration = mostRecents[2].time - mostRecents[0].time;
-      console.log("Previous activity duration: " + duration)
       
       // update the most recent entry with its duration
-      database.ref('activities/' + mostRecents[1]).update({ duration: duration });
+      database.ref('users/' + userId + '/activities/' + mostRecents[1]).update({ duration: duration });
     }
   });
 };
 
 Activity.listActivities = function () {
-
-  firebase.database().ref('activities').once('value').then(function(snapshot) {
+  var userId = firebase.auth().currentUser.uid;
+  firebase.database().ref('users/' + userId + '/activities/').once('value').then(function(snapshot) {
     var activities = snapshot.val();
     return activities;
   });

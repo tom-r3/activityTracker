@@ -13,8 +13,8 @@ at.view.index = {
     });
 
     // get variables for buttons
-    var regButton = document.forms['register'].commit;
-    var logButton = document.forms['login'].commit;
+    var regButton = document.forms['indexform'].register;
+    var logButton = document.forms['indexform'].login;
 
     // Set an event handler for the save/submit button
     regButton.addEventListener("click", 
@@ -25,9 +25,9 @@ at.view.index = {
   
   handleRegButtonClickEvent: function () {
   	// obtain form info
-  	var formEl = document.forms['register'];
-    var email = formEl.regEmail.value;
-    var password = formEl.regPass.value;
+  	var formEl = document.forms['indexform'];
+    var email = formEl.email.value;
+    var password = formEl.password.value;
 
     // log user in
   	firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
@@ -42,9 +42,9 @@ at.view.index = {
 
   handleLogButtonClickEvent: function () {
   	// obtain form info
-  	var formEl = document.forms['login'];
-  	var email = formEl.logEmail.value;
-    var password = formEl.logPass.value;
+  	var formEl = document.forms['indexform'];
+  	var email = formEl.email.value;
+    var password = formEl.password.value;
 
     // log user in
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {

@@ -3,9 +3,13 @@ at.view.settings = {
     //login listener
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        // User is signed in.
-        console.log(user);
-        // ...
+        //load all types
+        var userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('users/' + userId + '/types/').once('value').then(function(snapshot) {
+          snapshot.forEach(function(typeSnapshot) {
+            addRow(typeSnapshot.val().type);
+          }
+    )})
       } else {
         console.log("user is signed out");
         window.location = "/index.html";
@@ -25,13 +29,6 @@ at.view.settings = {
       optionEl.value = type;
       selectActivityEl.add(optionEl, null);
     }
-
-    //load all types
-    firebase.database().ref('types').once('value').then(function(snapshot) {
-      snapshot.forEach(function(typeSnapshot) {
-        addRow(typeSnapshot.val().type);
-      }
-    )})
 
     // listener for select event
     selectActivityEl.addEventListener("change", function () {
@@ -61,6 +58,8 @@ at.view.settings = {
     var formEl = document.forms['addType'];
     addType(formEl.type.value);
     formEl.reset();
+    // update the delete dropdown
+    window.location.replace("/settings.html");
   },
 
   handleDeleteSaveButtonClickEvent: function () {
@@ -68,6 +67,8 @@ at.view.settings = {
     var formEl = document.forms['deleteType'];
     deleteType(formEl.value);
     formEl.reset();
+    // update the delete dropdown
+    window.location.replace("/settings.html");
   },
 
   handleLogoutButtonClickEvent: function () {
