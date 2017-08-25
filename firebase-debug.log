@@ -33,3 +33,38 @@
 [debug] [2017-08-24T21:07:45.591Z] <<< HTTP RESPONSE 200
 [info] +  hosting: Local server: http://localhost:5000
 
+[debug] [2017-08-25T15:52:57.474Z] ----------------------------------------------------------------------
+[debug] [2017-08-25T15:52:57.479Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Tom Robertson\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2017-08-25T15:52:57.479Z] CLI Version:   3.9.2
+[debug] [2017-08-25T15:52:57.479Z] Platform:      win32
+[debug] [2017-08-25T15:52:57.480Z] Node Version:  v4.6.0
+[debug] [2017-08-25T15:52:57.481Z] Time:          Fri Aug 25 2017 11:52:57 GMT-0400 (Eastern Daylight Time)
+[debug] [2017-08-25T15:52:57.481Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-08-25T15:52:57.501Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-08-25T15:52:57.502Z] > authorizing via signed-in user
+[debug] [2017-08-25T15:52:57.505Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-08-25T15:52:57.505Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/nAQVm2lRQ02mqgelTVobqo4AvxY9t5a4BRZtISm1OeU',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Fri Aug 25 2017 11:52:57 GMT-0400 (Eastern Daylight Time)
+[debug] [2017-08-25T15:52:57.756Z] <<< HTTP RESPONSE 200
+[debug] [2017-08-25T15:52:57.763Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/activity-tracker-60ff5  
+ Fri Aug 25 2017 11:52:57 GMT-0400 (Eastern Daylight Time)
+[debug] [2017-08-25T15:52:58.153Z] <<< HTTP RESPONSE 200
+[debug] [2017-08-25T15:52:58.156Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/activity-tracker-60ff5/tokens  
+ Fri Aug 25 2017 11:52:58 GMT-0400 (Eastern Daylight Time)
+[debug] [2017-08-25T15:52:58.522Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\Tom Robertson\Documents\Projects\activityTracker'...
+[info] 
+[debug] [2017-08-25T15:52:58.529Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/activity-tracker-60ff5  
+ Fri Aug 25 2017 11:52:58 GMT-0400 (Eastern Daylight Time)
+[debug] [2017-08-25T15:52:58.855Z] <<< HTTP RESPONSE 200
+[debug] [2017-08-25T15:52:58.856Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/22021887838/clients/_:getWebAppConfig  
+ Fri Aug 25 2017 11:52:58 GMT-0400 (Eastern Daylight Time)
+[debug] [2017-08-25T15:52:59.204Z] <<< HTTP RESPONSE 200
+[info] +  hosting: Local server: http://localhost:5000
+
