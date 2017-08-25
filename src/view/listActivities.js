@@ -2,6 +2,19 @@
  
  at.view.listActivities = {
   setupUserInterface: function () {
+    // firebase event listener
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        console.log(user);
+        // ...
+      } else {
+        console.log("user is signed out");
+        window.location = "/index.html";
+      }
+    });
+
+    // set up table
     var tableBodyEl = document.querySelector("table#activities>tbody");
 
     function addRow(activity) {

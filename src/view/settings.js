@@ -1,5 +1,17 @@
 at.view.settings = {
   setupUserInterface: function () {
+    //login listener
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        console.log(user);
+        // ...
+      } else {
+        console.log("user is signed out");
+        window.location = "/index.html";
+      }
+    });
+
     // set up delete drop down
     var formEl = document.forms['deleteType'],
         deleteButton = formEl.commit,
@@ -33,11 +45,16 @@ at.view.settings = {
     var addSaveButton = document.forms['addType'].commit;
     var deleteSaveButton = document.forms['deleteType'].commit;
 
-    // Set an event handler for the save/submit button
+    // Set an event handler for the save/submit buttons
     addSaveButton.addEventListener("click", 
         at.view.settings.handleAddSaveButtonClickEvent);
     deleteSaveButton.addEventListener("click", 
         at.view.settings.handleDeleteSaveButtonClickEvent);
+
+    // handle logout button
+    var logoutButton = document.getElementById("logout");
+    logoutButton.addEventListener("click", 
+        at.view.settings.handleLogoutButtonClickEvent);
   },
   
   handleAddSaveButtonClickEvent: function () {
@@ -51,5 +68,9 @@ at.view.settings = {
     var formEl = document.forms['deleteType'];
     deleteType(formEl.value);
     formEl.reset();
+  },
+
+  handleLogoutButtonClickEvent: function () {
+    firebase.auth().signOut();
   }
 };

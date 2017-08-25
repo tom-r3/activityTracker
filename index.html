@@ -17,28 +17,33 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Activity Tracker</title>
-  <link rel="stylesheet" href="src/view/style.css">
-
+  <title>Activity Tracker</title>    
   <script src="src/ctrl/initialize.js"></script>
   <script src="src/model/Activity.js"></script>
+  <script src="src/view/index.js"></script>
   <script src="src/model/buttons.js"></script>
-  <script src="src/view/main.js"></script>
-
   <script>
-   window.addEventListener( "load", at.view.main.setupUserInterface);
+   window.addEventListener("load", at.view.index.setupUserInterface);
   </script>
 </head>
 
-<body class="index">
-  <a href="settings.html"><button class ="settings" id="add" type="button">Settings</button></a>
-  <a href="listActivities.html"><button class ="view" id="view" type="button">View Activities</button></a>
-  <h1 id="header">Activity Tracker</h1>
-  <h2 id="subhead">An Efficient Way to Increase Productivity</h2>
-  <p>This app supports the following operations:</p>
-  <div class="buttonmenu" id="buttonmenu">
-  </div>
+<body>
+  <h1>Activity Tracker: Login</h1>
 
-  <nav><a href="index.html">Back to main menu</a></nav>
+  <h2> Register </h2>
+  <form id="register">
+    <p><label>Email: <input name="regEmail" /></label></p>
+    <p><label>Password: <input name="regPass" /></label></p>
+    <p><button type="button" name="commit">Register</button></p>
+  </form>
+
+  <h2> Login </h2>
+  <form id="login">
+    <p><label>Email: <input name="logEmail" /></label></p>
+    <p><label>Password: <input name="logPass" /></label></p>
+    <p><button type="button" name="commit">Login</button></p>
+  </form>
+
+  <nav><a href="main.html">Back to main menu</a></nav>
 </body>
-</html> 
+</html>

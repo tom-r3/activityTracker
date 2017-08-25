@@ -1,5 +1,17 @@
 at.view.main = {
   setupUserInterface: function () {
+    // firebase event listener
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        console.log(user);
+        // ...
+      } else {
+        console.log("user is signed out");
+        window.location = "/index.html";
+      }
+    });
+
     // open a connection to the database and read all activities
     firebase.database().ref('types').once('value').then(function(snapshot) {
       snapshot.forEach(function(typeSnapshot) {
